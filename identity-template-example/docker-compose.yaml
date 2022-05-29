@@ -1,0 +1,43 @@
+version: '3.7'
+
+services:
+  auth-identity-db:
+    image: postgres
+    restart: always
+    ports:
+      - '33674:5432'
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: dev_auth-identity
+    volumes:
+      - auth-identity-data:/var/lib/postgresql/data
+
+  auth-config-db:
+    image: postgres
+    restart: always
+    ports:
+      - '33675:5432'
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: auth-dev_config
+    volumes:
+      - auth-config-data:/var/lib/postgresql/data
+
+  auth-ops-db:
+    image: postgres
+    restart: always
+    ports:
+      - '33676:5432'
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      auth-POSTGRES_DB: dev_ops
+    volumes:
+      - auth-ops-data:/var/lib/postgresql/data
+
+volumes:
+  auth-identity-data:
+  auth-config-data:
+  auth-ops-data:

@@ -1,0 +1,107 @@
+@using Duende.IdentityServer.Extensions
+@{
+    string name = null;
+    if (!true.Equals(ViewData["signed-out"]))
+    {
+        name = Context.User?.GetDisplayName();
+    }
+}
+
+<div class="nav-page">
+    <nav class="flex items-center justify-between bg-gray-700 px-4 py-3">
+
+        <a href="~/" class="flex items-center justify-start">
+            <img class="h-12 w-12" src="~/duende-logo.svg" class="icon-banner" alt="Logo">
+            <p class="text-white font-medium text-lg pl-2">
+                Duende IdentityServer
+            </p>
+        </a>
+
+        @if (!string.IsNullOrWhiteSpace(name))
+        {
+            <div class="flex justify-center">
+                <div
+                    x-data="{
+                        open: false,
+                        toggle() {
+                            if (this.open) {
+                                return this.close()
+                            }
+
+                            this.$refs.button.focus()
+
+                            this.open = true
+                        },
+                        close(focusAfter) {
+                            if (! this.open) return
+
+                            this.open = false
+
+                            focusAfter && focusAfter.focus()
+                        }
+                    }"
+                    x-on:keydown.escape.prevent.stop="close($refs.button)"
+                    x-on:focusin.window="! $refs.panel.contains($event.target) && close()"
+                    x-id="['dropdown-button']"
+                    class="relative"
+                >
+                    <!-- Button -->
+                    <button
+                        x-ref="button"
+                        x-on:click="toggle()"
+                        :aria-expanded="open"
+                        :aria-controls="$id('dropdown-button')"
+                        type="button"
+                        class="bg-gray-600 text-gray-100 px-3 py-2 rounded-md shadow flex items-center"
+                    >
+                        <span>@name</span>
+                        
+                        <svg class="-mr-1 ml-2 h-5 w-5" x-description="Heroicon name: solid/chevron-down" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                          <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+                        </svg>
+                    </button>
+
+                    <!-- Panel -->
+                    <div
+                        x-ref="panel"
+                        x-show="open"
+                        x-transition.origin.top.left
+                        x-on:click.outside="close($refs.button)"
+                        :id="$id('dropdown-button')"
+                        style="display: none;"
+                        class="absolute left-0 mt-2 w-40 bg-white rounded shadow-md overflow-hidden"
+                    >
+                        <div>
+                            <a asp-page="/Account/Manage/Index" class="block w-full px-4 py-2 text-left text-sm hover:bg-gray-50 disabled:text-gray-500" >
+                                Manage Account
+                            </a>
+                        </div>
+
+                        <div class="border-t border-gray-200">
+                            <a asp-page="/Account/Logout/Index" class="block w-full px-4 py-2 text-left text-sm hover:bg-gray-50 disabled:text-gray-500">
+                                Logout
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        }
+        else 
+        {
+            <div class="space-x-2 flex items-center justify-end">
+                <a href="~/account/login" 
+                   class="inline-flex items-center px-4 py-2 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500"
+                >
+                    Login
+                </a>
+                <a href="~/account/register" 
+                   class="inline-flex items-center px-4 py-2 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+                >
+                    Register
+                </a>
+            </div>
+        }
+    
+    </nav>
+</div>

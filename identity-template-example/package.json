@@ -1,0 +1,9 @@
+{
+  "dependencies": {},
+  "scripts": {},
+  "devDependencies": {
+    "cross-env": "^7.0.3",
+    "@tailwindcss/forms": "^0.3.4"
+  },
+  "author": "Built with Craftsman - https://github.com/pdevito3/craftsman"
+}

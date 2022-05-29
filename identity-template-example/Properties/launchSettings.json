@@ -1,0 +1,43 @@
+{
+  "profiles": {
+    "SelfHost": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "IDENTITY_DB_CONNECTION_STRING": "Host=localhost;Port=33674;Database=auth-identity-db;Username=postgres;Password=postgres",
+        "CONFIG_DB_CONNECTION_STRING": "Host=localhost;Port=33675;Database=auth-config-db;Username=postgres;Password=postgres",
+        "OPS_DB_CONNECTION_STRING": "Host=localhost;Port=33676;Database=auth-ops-db;Username=postgres;Password=postgres"
+      },
+      "applicationUrl": "https://localhost:3385"
+    },
+    "mac-watch": {
+      "commandName": "Executable",
+      "executablePath": "dotnet",
+      "workingDirectory": "$(ProjectDir)",
+      "commandLineArgs": "watch run",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "IDENTITY_DB_CONNECTION_STRING": "Host=localhost;Port=33674;Database=auth-identity-db;Username=postgres;Password=postgres",
+        "CONFIG_DB_CONNECTION_STRING": "Host=localhost;Port=33675;Database=auth-config-db;Username=postgres;Password=postgres",
+        "OPS_DB_CONNECTION_STRING": "Host=localhost;Port=33676;Database=auth-ops-db;Username=postgres;Password=postgres"
+      },
+      "applicationUrl": "https://localhost:3385"
+    },
+    "windows-watch": {
+      "commandName": "Executable",
+      "executablePath": "C:\\Program Files\\dotnet\\dotnet.exe",
+      "workingDirectory": "$(ProjectDir)",
+      "commandLineArgs": "watch run",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "IDENTITY_DB_CONNECTION_STRING": "Host=localhost;Port=33674;Database=auth-identity-db;Username=postgres;Password=postgres",
+        "CONFIG_DB_CONNECTION_STRING": "Host=localhost;Port=33675;Database=auth-config-db;Username=postgres;Password=postgres",
+        "OPS_DB_CONNECTION_STRING": "Host=localhost;Port=33676;Database=auth-ops-db;Username=postgres;Password=postgres"
+      },
+      "applicationUrl": "https://localhost:3385"
+    }
+  }
+}
