@@ -94,7 +94,7 @@ public class Index : PageModel
             IdentityResult claimResult = null;
             if (result.Succeeded)
             {
-                claimResult = await _userManager.AddToRoleAsync(user, role);
+                claimResult = await _userManager.AddClaimAsync(user, new Claim(JwtClaimTypes.Role, role));
 
                 if (claimResult != null && claimResult.Succeeded)
                 {
@@ -103,25 +103,23 @@ public class Index : PageModel
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
                     var callbackUrl = Url.Page(
-                        "/Account/ConfirmEmail",
+                        "/Account/ConfirmEmail/Index",
                         pageHandler: null,
                         values: new { area = "Identity", userId = user.Id, code = code, returnUrl = returnUrl },
                         protocol: Request.Scheme);
-
+                    
                     await _emailService.SendEmail(
                         Input.Email, 
                         "Confirm your email",
                         $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
-                    if (_userManager.Options.SignIn.RequireConfirmedAccount)
-                    {
-                        return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });
-                    }
-
                     await _signInManager.SignInAsync(user, isPersistent: false);
                     return LocalRedirect(returnUrl);
                 }
             }
+            
+            // TODO if fail and unconfirmed, send confirm email again?
+            
             foreach (var error in result.Errors)
             {
                 ModelState.AddModelError(string.Empty, error.Description);

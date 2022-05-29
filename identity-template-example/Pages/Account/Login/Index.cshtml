@@ -38,18 +38,28 @@
                     </div>
                 </div>
 
-                <div class="pt-3 flex items-center justify-between">
+                <div class="pt-3 flex items-start justify-between px-1">
                     @if (Model.View.AllowRememberLogin)
                     {
-                        <div class="flex items-center">
-                            <input asp-for="Input.RememberMe" id="RememberLogin" name="RememberLogin" type="checkbox" class="h-4 w-4 text-violet-600 focus:ring-violet-500 border-gray-300 rounded"/>
-                            <label asp-for="Input.RememberMe" class="ml-2 block text-sm text-gray-900"> Remember me </label>
+                        <div class="relative flex items-start">
+                            <div class="flex items-center h-5">
+                                <input
+                                    asp-for="Input.RememberMe" 
+                                    id="rememberMe"
+                                    aria-describedby="remember me checkbox"
+                                    name="rememberMe"
+                                    type="checkbox"
+                                    class="h-4 w-4 text-violet-600 focus:ring-violet-500 border-gray-300 rounded"
+                                />
+                            </div>
+                            <div class="ml-2 text-sm">
+                                <label  asp-for="Input.RememberMe" htmlFor="rememberMe" for="rememberMe" class="font-medium text-gray-700 select-none">
+                                    Remember me
+                                </label>
+                            </div>
                         </div>
                     }
-                </div>
-
-                <div class="pt-3 flex items-center justify-start">
-                    <a asp-page="/Account/ForgotPassword" class="text-blue-400 underline">
+                    <a asp-page="/Account/ForgotPassword" class="text-blue-400 text-sm hover:underline">
                         Forgot password?
                     </a>
                 </div>
