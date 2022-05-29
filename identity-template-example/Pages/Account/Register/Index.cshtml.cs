@@ -11,8 +11,10 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
 using System.Collections.Generic;
+using System.Text.Encodings.Web;
 using IdentityModel;
 using Models;
+using Services;
 
 [AllowAnonymous]
 public class Index : PageModel
@@ -21,18 +23,20 @@ public class Index : PageModel
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly IPasswordValidator<ApplicationUser> _passwordValidator;
     private readonly ILogger<Index> _logger;
-    // private readonly IEmailSender _emailSender;
+    private readonly IEmailService _emailService;
 
     public Index(
         UserManager<ApplicationUser> userManager,
         SignInManager<ApplicationUser> signInManager,
         ILogger<Index> logger, 
-        IPasswordValidator<ApplicationUser> passwordValidator)
+        IPasswordValidator<ApplicationUser> passwordValidator, 
+        IEmailService emailService)
     {
         _userManager = userManager;
         _signInManager = signInManager;
         _logger = logger;
         _passwordValidator = passwordValidator;
+        _emailService = emailService;
     }
 
     [BindProperty]
@@ -104,8 +108,10 @@ public class Index : PageModel
                         values: new { area = "Identity", userId = user.Id, code = code, returnUrl = returnUrl },
                         protocol: Request.Scheme);
 
-                    // await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
-                    //     $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                    await _emailService.SendEmail(
+                        Input.Email, 
+                        "Confirm your email",
+                        $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {

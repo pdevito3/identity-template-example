@@ -11,8 +11,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
+using Services;
 
- 
 internal static class HostingExtensions
 {
     public static WebApplication ConfigureServices(this WebApplicationBuilder builder)
@@ -99,6 +99,11 @@ internal static class HostingExtensions
         builder.Services.AddTransient<ClientRepository>();
         builder.Services.AddTransient<IdentityScopeRepository>();
         builder.Services.AddTransient<ApiScopeRepository>();
+        
+        if(builder.Environment.IsDevelopment())
+            builder.Services.AddTransient<IEmailService, LocalEmailService>();
+        else
+            builder.Services.AddTransient<IEmailService, EmailService>();
         
         return builder.Build();
     }

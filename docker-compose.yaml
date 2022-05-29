@@ -37,6 +37,13 @@ services:
     volumes:
       - auth-ops-data:/var/lib/postgresql/data
 
+  auth-mailhog:
+    image: mailhog/mailhog
+    restart: always
+    ports:
+      - '34981:1025' # smptp
+      - '44981:8025' # ui
+
 volumes:
   auth-identity-data:
   auth-config-data:
