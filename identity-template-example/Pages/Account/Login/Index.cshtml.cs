@@ -104,6 +104,15 @@ public class Index : PageModel
                 // user might have clicked on a malicious link - should be logged
                 throw new Exception("invalid return URL");
             }
+            if (result.IsNotAllowed)
+            {
+                var user = await _userManager.FindByNameAsync(Input.Username);
+                if (!await _userManager.IsEmailConfirmedAsync(user))
+                {
+                    // TODO handle this -- send another email
+                    // Email isn't confirmed.
+                }
+            }
             if (result.RequiresTwoFactor)
             {
                 // TODO add FIDO option https://github.com/damienbod/IdentityServer4AspNetCoreIdentityTemplate/blob/1ad5445e112e9042eba5f0cbb3c747d25d8ed5bc/content/StsServerIdentity/Controllers/AccountController.cs#L117
