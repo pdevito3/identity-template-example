@@ -43,6 +43,7 @@ public class Index : PageModel
     public InputModel Input { get; set; }
 
     public string ReturnUrl { get; set; }
+    public IdentityResult PasswordValidationResult { get; set; } = new IdentityResult();
 
     public string Role { get; set; }
 
@@ -79,10 +80,10 @@ public class Index : PageModel
         ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
         
         var user = new ApplicationUser() { UserName = Input.Email, Email = Input.Email };
-        var passwordValidationResult = await _passwordValidator.ValidateAsync(_userManager, user, Input.Password);
-        if (!passwordValidationResult.Succeeded)
+        PasswordValidationResult = await _passwordValidator.ValidateAsync(_userManager, user, Input.Password);
+        if (!PasswordValidationResult.Succeeded)
         {
-            foreach (var identityError in passwordValidationResult.Errors)
+            foreach (var identityError in PasswordValidationResult.Errors)
             {
                 ModelState.AddModelError(identityError.Code, identityError.Description);
             }
